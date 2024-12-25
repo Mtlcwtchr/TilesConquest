@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976d2417138b41ae86d20d696a7a4b85, type: 3}
   m_Name: DesertBaseFill
   m_EditorClassIdentifier: 
-  tileName: 
-  tileDescription: 
-  tileImage: {fileID: 0}
+  tileName: Desert
+  tileDescription: Desert is really great it gives you gold from tourists and some
+    explorations so just place it already
+  tileImage: {fileID: 21300000, guid: 2730df012adabeb4b9ebe1fdb80df037, type: 3}
   fillView: {fileID: 5884990725033842411, guid: 267702d4e736f0c43a78a174becb91f3,
     type: 3}
   effects:

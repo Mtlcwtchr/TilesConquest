@@ -4,6 +4,7 @@ using Tiles.Manager;
 using Tiles.Pool;
 using UI.Bag;
 using UI.Storage;
+using UI.TilesInfo;
 using UnityEngine;
 using World;
 
@@ -18,6 +19,8 @@ namespace Startup
 		[SerializeField] private float updateTime;
 
 		[SerializeField] private StoragePanelView storagePanel;
+
+		[SerializeField] private TilesInfoPanelView infoPanel;
 
 		private float _deltaTime;
 
@@ -39,6 +42,10 @@ namespace Startup
 
 			var storagePanelModel = new StoragePanel(storagePanel, storage);
 			storagePanel.Init(storagePanelModel);
+
+			var infoPanelModel = new TilesInfoPanel(infoPanel, manager);
+			infoPanel.Init(infoPanelModel);
+			infoPanelModel.Hide();
 		}
 
 		private void Update()

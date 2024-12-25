@@ -8,6 +8,7 @@ namespace Tiles.Config
 	public class TileFillConfig : ScriptableObject
 	{
 		public string tileName;
+		[TextArea(3, 5)]
 		public string tileDescription;
 		public Sprite tileImage;
 		

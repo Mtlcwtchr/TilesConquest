@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976d2417138b41ae86d20d696a7a4b85, type: 3}
   m_Name: GroundBaseFill
   m_EditorClassIdentifier: 
-  tileName: 
-  tileDescription: 
-  tileImage: {fileID: 0}
+  tileName: Forest
+  tileDescription: Forest is really great it gives you food and some  shit you know
+    just place it already
+  tileImage: {fileID: 21300000, guid: c5ddb8b67aa754a498eac47662115515, type: 3}
   fillView: {fileID: 2077769175738176933, guid: b64dd5b5655f1f945858e7ada3d994c2,
     type: 3}
   effects:
