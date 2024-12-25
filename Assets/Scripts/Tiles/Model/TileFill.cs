@@ -10,5 +10,13 @@ namespace Tiles.Model
 		{
 			Config = config;
 		}
+
+		public void ApplyEffects(World.World world)
+		{
+			for (var i = 0; i < Config.effects.Count; i++)
+			{
+				Config.effects[i].Apply(world);
+			}
+		}
 	}
 }

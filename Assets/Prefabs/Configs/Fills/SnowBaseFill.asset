@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976d2417138b41ae86d20d696a7a4b85, type: 3}
   m_Name: SnowBaseFill
   m_EditorClassIdentifier: 
+  tileName: 
+  tileDescription: 
+  tileImage: {fileID: 0}
   fillView: {fileID: 9130507108776228232, guid: 1f17678d9688bce4b965ebc75675bf4b,
     type: 3}
+  effects:
+  - {fileID: 11400000, guid: 4ed7a5ac36c60c14b8a4b87ab855c6d8, type: 2}

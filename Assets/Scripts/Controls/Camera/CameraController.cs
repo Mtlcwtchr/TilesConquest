@@ -7,10 +7,9 @@ namespace Controls
 	{
 		[SerializeField] private Camera camera;
 		[SerializeField] private float speed;
+		[SerializeField] private float scrollSpeed;
 		
-		private const float _mouseMoveDelta = 10 * 10;
-		
-		private bool _mousePressed;
+		private bool _moveRequested;
 		private Vector2 _mousePosition;
 		private Vector2 _pressPosition;
 
@@ -18,20 +17,57 @@ namespace Controls
 		
 		private void Update()
 		{
+			CheckMovementByMouse();
+			//CheckMovementByTouch();
+		}
+
+		private void CheckMovementByMouse()
+		{
 			if (Input.GetMouseButtonDown(1))
 			{
-				_mousePressed = true;
+				_moveRequested = true;
 				_pressPosition = Input.mousePosition;
 				_mousePosition = _pressPosition;
 			}
 
 			if (Input.GetMouseButtonUp(1))
 			{
-				_mousePressed = false;
+				_moveRequested = false;
 				_moveDelta = Vector3.zero;
 			}
 
-			if (!_mousePressed)
+			if (!_moveRequested)
+				return;
+
+			_mousePosition = Input.mousePosition;
+			_moveDelta = (_pressPosition - _mousePosition).V3();
+			_moveDelta.Normalize();
+		}
+
+		private void CheckScrollByMouse()
+		{
+			var mouseScrollDelta = Input.mouseScrollDelta;
+		}
+
+		private void CheckMovementByTouch()
+		{
+			if (Input.touchCount != 1)
+			{
+				_moveRequested = false;
+				_moveDelta = Vector3.zero;
+				return;
+			}
+
+			var touch = Input.GetTouch(0);
+			
+			if (!_moveRequested)
+			{
+				_moveRequested = true;
+				_pressPosition = touch.position;
+				_mousePosition = _pressPosition;
+			}
+
+			if (!_moveRequested)
 				return;
 
 			_mousePosition = Input.mousePosition;

@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976d2417138b41ae86d20d696a7a4b85, type: 3}
   m_Name: DesertBaseFill
   m_EditorClassIdentifier: 
+  tileName: 
+  tileDescription: 
+  tileImage: {fileID: 0}
   fillView: {fileID: 5884990725033842411, guid: 267702d4e736f0c43a78a174becb91f3,
     type: 3}
+  effects:
+  - {fileID: 11400000, guid: 757aaece00079b94dae3a82d6f240966, type: 2}

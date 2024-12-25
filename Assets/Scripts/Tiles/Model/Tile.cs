@@ -41,6 +41,11 @@ namespace Tiles.Model
 			_view.UpdateFill(_fill);
 		}
 
+		public void ApplyEffects(World.World world)
+		{
+			_fill?.ApplyEffects(world);
+		}
+
 		private void MouseClick()
 		{
 			OnMouseClick?.Invoke(this);

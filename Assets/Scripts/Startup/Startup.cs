@@ -3,7 +3,9 @@ using Tiles.Config;
 using Tiles.Manager;
 using Tiles.Pool;
 using UI.Bag;
+using UI.Storage;
 using UnityEngine;
+using World;
 
 namespace Startup
 {
@@ -13,6 +15,13 @@ namespace Startup
 		[SerializeField] private TilesPoolConfig poolConfig;
 
 		[SerializeField] private TilesBagView bagView;
+		[SerializeField] private float updateTime;
+
+		[SerializeField] private StoragePanelView storagePanel;
+
+		private float _deltaTime;
+
+		private World.World _world;
 		
 		private void Awake()
 		{
@@ -22,8 +31,24 @@ namespace Startup
 			manager.CreateGrid(gridSize);
 
 			var pool = new TilesPool(poolConfig);
-			var bag = new TilesBag(pool, manager);
+			var bag = new TilesBag(bagView, pool, manager);
 			bagView.Init(bag);
+
+			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food);
+			_world = new World.World(storage, manager);
+
+			var storagePanelModel = new StoragePanel(storagePanel, storage);
+			storagePanel.Init(storagePanelModel);
+		}
+
+		private void Update()
+		{
+			if ((_deltaTime += Time.deltaTime) < updateTime)
+				return;
+
+			_deltaTime = 0f;
+			
+			_world.Update();
 		}
 	}
 }

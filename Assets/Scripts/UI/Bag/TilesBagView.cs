@@ -21,7 +21,6 @@ namespace UI.Bag
 		public void Init(TilesBag model)
 		{
 			_model = model;
-			_model.BindView(this);
 		}
 		
 		private void Awake()

@@ -11,24 +11,20 @@ namespace UI.Bag
 
 		private TilesBagView _view;
 		
-		public TilesBag(TilesPool pool, TilesManager manager)
+		public TilesBag(TilesBagView view, TilesPool pool, TilesManager manager)
 		{
 			_pool = pool;
 			_manager = manager;
 			
 			_manager.OnFillSelected += FillSelected;
+			
+			_view = view;
+			_view.OnButtonClick += Click;
 		}
 
 		private void FillSelected(TileFill fill)
 		{
 			_view.Enabled = fill == null;
-		}
-
-		public void BindView(TilesBagView view)
-		{
-			_view = view;
-			
-			_view.OnButtonClick += Click;
 		}
 
 		private void Click()

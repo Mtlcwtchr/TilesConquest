@@ -17,6 +17,14 @@ namespace Tiles.Manager
 		private List<Tile> _availablePlaces = new();
 
         private TileFill _selectedFill;
+
+        public void Update(World.World world)
+        {
+            for (var i = 0; i < _activeTiles.Count; i++)
+            {
+                _activeTiles[i].ApplyEffects(world);
+            }
+        }
 		
 		public void CreateGrid(Vector2Int size)
         {
