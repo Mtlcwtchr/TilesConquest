@@ -46,6 +46,10 @@ namespace Tiles.Manager
 
         private void CalculateAvailablePlaceholders()
         {
+            for (var i = 0; i < _availablePlaces.Count; i++)
+            {
+                _availablePlaces[i].Available = false;
+            }
             _availablePlaces.Clear();
             if (_activeTiles.Count == 0)
             {
