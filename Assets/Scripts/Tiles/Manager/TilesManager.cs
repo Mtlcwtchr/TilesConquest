@@ -94,6 +94,9 @@ namespace Tiles.Manager
         public void SetFill(Vector2Int pos, TileFill fill)
         {
             var tile = _tiles[pos.x][pos.y];
+            if (!tile.Available)
+                return;
+            
             tile.SetFill(fill);
             
             tile.Available = false;
