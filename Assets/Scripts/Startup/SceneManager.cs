@@ -1,16 +1,20 @@
-﻿using Tiles;
+﻿using System.Collections;
+using Game;
+using Tiles;
 using Tiles.Config;
 using Tiles.Manager;
 using Tiles.Pool;
 using UI.Bag;
+using UI.Manager;
 using UI.Storage;
 using UI.TilesInfo;
+using UI.Turn;
 using UnityEngine;
 using World;
 
 namespace Startup
 {
-	public class Startup : MonoBehaviour
+	public class SceneManager : MonoBehaviour
 	{
 		[SerializeField] private TilesManagerView managerView;
 		[SerializeField] private TilesPoolConfig poolConfig;
@@ -22,9 +26,15 @@ namespace Startup
 
 		[SerializeField] private TilesInfoPanelView infoPanel;
 
+		[SerializeField] private TurnControl turnControl;
+
 		private float _deltaTime;
 
 		private World.World _world;
+
+		private GameManager _gameManager;
+
+		private UIManager _uiManager;
 		
 		private void Awake()
 		{
@@ -46,16 +56,24 @@ namespace Startup
 			var infoPanelModel = new TilesInfoPanel(infoPanel, manager);
 			infoPanel.Init(infoPanelModel);
 			infoPanelModel.Hide();
+
+			var player = new Player(manager);
+
+			turnControl.Init(player);
+			
+			_gameManager = new GameManager(new() { player }, _world);
+			_gameManager.OnTurnFinish += UpdateTurn;
+
+			_uiManager = new UIManager(player, bag);
+			
+			UpdateTurn();
 		}
 
-		private void Update()
+		private void UpdateTurn()
 		{
-			if ((_deltaTime += Time.deltaTime) < updateTime)
-				return;
-
-			_deltaTime = 0f;
-			
 			_world.Update();
+			
+			_gameManager.Update();
 		}
 	}
 }

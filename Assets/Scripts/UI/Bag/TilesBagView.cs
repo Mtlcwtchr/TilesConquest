@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace UI.Bag
 {
-	public class TilesBagView : MonoBehaviour
+	public class TilesBagView : UIView
 	{
 		public event Action OnButtonClick;
 		
