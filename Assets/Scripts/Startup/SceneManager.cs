@@ -69,7 +69,7 @@ namespace Startup
 			_gameManager = new GameManager(new() { player }, _world);
 			_gameManager.OnTurnFinish += UpdateTurn;
 
-			_uiManager = new UIManager(player, bag);
+			_uiManager = new UIManager(player, bag, tilesControlPanelModel);
 			
 			UpdateTurn();
 		}

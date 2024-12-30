@@ -1,6 +1,7 @@
 ﻿using System;
 using Game;
 using UI.Bag;
+using UI.TilesControl;
 
 namespace UI.Manager
 {
@@ -9,13 +10,22 @@ namespace UI.Manager
 		private Player _player;
 		
 		private TilesBag _bag;
+
+		private TilesControlPanel _controlPanel;
 		
-		public UIManager(Player player, TilesBag bag)
+		public UIManager(Player player, TilesBag bag, TilesControlPanel controlPanel)
 		{
 			_player = player;
 			_bag = bag;
+			_controlPanel = controlPanel;
 			
 			_player.OnTurn += PlayerTurn;
+			_player.OnTurnFinish += PlayerTurnFinish;
+		}
+
+		private void PlayerTurnFinish()
+		{
+			_controlPanel.Locked = true;
 		}
 
 		private void PlayerTurn(ETurnPhase phase)
@@ -24,6 +34,7 @@ namespace UI.Manager
 			{
 				case ETurnPhase.PlaceTile:
 					_bag.Locked = false;
+					_controlPanel.Locked = false;
 					break;
 				case ETurnPhase.Decide:
 					_bag.Locked = true;

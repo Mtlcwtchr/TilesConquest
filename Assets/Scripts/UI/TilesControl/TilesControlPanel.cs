@@ -30,6 +30,9 @@ namespace UI.TilesControl
 
 		private void FocusSelected(TileEffect effect)
 		{
+			if (Locked)
+				return;
+			
 			Tile.Fill.ActiveFocus = effect;
 			_view.UpdateFocus(Tile);
 		}
