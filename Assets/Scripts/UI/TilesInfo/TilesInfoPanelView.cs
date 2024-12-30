@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI.TilesInfo
 {
-	public class TilesInfoPanelView : MonoBehaviour
+	public class TilesInfoPanelView : UIView
 	{
 		[SerializeField] private TMP_Text label;
 		[SerializeField] private TMP_Text description;
@@ -23,15 +23,5 @@ namespace UI.TilesInfo
 		}
 		
 		public void Init(TilesInfoPanel model) {}
-		
-		public void Show()
-		{
-			gameObject.SetActive(true);
-		}
-
-		public void Hide()
-		{
-			gameObject.SetActive(false);
-		}
 	}
 }

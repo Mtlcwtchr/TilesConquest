@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Tiles.Model;
 using UnityEngine;
 using World;
 
@@ -15,9 +16,22 @@ namespace Effects
 			public int value;
 		}
 
+		public override string Description
+		{
+			get
+			{
+				var value = base.Description;
+				for (var i = 0; i < resources.Count; i++)
+				{
+					value = value.Replace($"${resources[i].resource.ToString().ToLower()}", resources[i].value.ToString());
+				}
+				return value;
+			}
+		}
+
 		[SerializeField] private List<ResourceAdvance> resources;
 		
-		public override void Apply(World.World world)
+		public override void Apply(TileFill source, World.World world)
 		{
 			var storage = world.Storage;
 			for (var i = 0; i < resources.Count; i++)

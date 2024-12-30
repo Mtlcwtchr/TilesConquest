@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Game;
+﻿using Game;
 using Tiles;
 using Tiles.Config;
 using Tiles.Manager;
@@ -7,6 +6,7 @@ using Tiles.Pool;
 using UI.Bag;
 using UI.Manager;
 using UI.Storage;
+using UI.TilesControl;
 using UI.TilesInfo;
 using UI.Turn;
 using UnityEngine;
@@ -28,6 +28,8 @@ namespace Startup
 
 		[SerializeField] private TurnControl turnControl;
 
+		[SerializeField] private TilesControlPanelView tilesControlPanel;
+
 		private float _deltaTime;
 
 		private World.World _world;
@@ -47,7 +49,7 @@ namespace Startup
 			var bag = new TilesBag(bagView, pool, manager);
 			bagView.Init(bag);
 
-			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food);
+			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food, EResource.Recruits);
 			_world = new World.World(storage, manager);
 
 			var storagePanelModel = new StoragePanel(storagePanel, storage);
@@ -56,6 +58,9 @@ namespace Startup
 			var infoPanelModel = new TilesInfoPanel(infoPanel, manager);
 			infoPanel.Init(infoPanelModel);
 			infoPanelModel.Hide();
+
+			var tilesControlPanelModel = new TilesControlPanel(tilesControlPanel, manager);
+			tilesControlPanel.Hide();
 
 			var player = new Player(manager);
 
@@ -71,8 +76,6 @@ namespace Startup
 
 		private void UpdateTurn()
 		{
-			_world.Update();
-			
 			_gameManager.Update();
 		}
 	}

@@ -16,6 +16,7 @@ namespace UI.Storage
 			ResourceAdvanced(EResource.Gold, _storage.Get(EResource.Gold));
 			ResourceAdvanced(EResource.Goods, _storage.Get(EResource.Goods));
 			ResourceAdvanced(EResource.Food, _storage.Get(EResource.Food));
+			ResourceAdvanced(EResource.Recruits, _storage.Get(EResource.Recruits));
 		}
 
 		private void ResourceAdvanced(EResource resource, int amount)

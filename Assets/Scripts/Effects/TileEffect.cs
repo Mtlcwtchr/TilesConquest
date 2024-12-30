@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tiles.Model;
+using UnityEngine;
 
 namespace Effects
 {
@@ -7,9 +8,9 @@ namespace Effects
 		[SerializeField] private string description;
 		[SerializeField] private Sprite icon;
 
-		public string Description => description;
+		public virtual string Description => description;
 		public Sprite Icon => icon;
 
-		public abstract void Apply(World.World world);
+		public abstract void Apply(TileFill source, World.World world);
 	}
 }

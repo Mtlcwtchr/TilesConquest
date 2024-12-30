@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6704f382949d499e844fc7bed47880f4, type: 3}
   m_Name: AdvanceGoods
   m_EditorClassIdentifier: 
-  description: Advance Goods
-  icon: {fileID: 0}
+  description: Advance Goods for $goods
+  icon: {fileID: 21300000, guid: e36ef395c8a59bd4bb3a74f965e546a1, type: 3}
   resources:
   - resource: 1
     value: 10

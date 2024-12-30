@@ -5,5 +5,6 @@
 		Gold,
 		Goods,
 		Food,
+		Recruits,
 	}
 }

@@ -10,6 +10,7 @@ namespace UI.Storage
 		[SerializeField] private TMP_Text gold;
 		[SerializeField] private TMP_Text goods;
 		[SerializeField] private TMP_Text food;
+		[SerializeField] private TMP_Text recruits;
 
 		private Dictionary<EResource, TMP_Text> _resourceAmounts;
 
@@ -21,7 +22,8 @@ namespace UI.Storage
 			{
 				{ EResource.Gold, gold },
 				{ EResource.Goods, goods },
-				{ EResource.Food, food }
+				{ EResource.Food, food },
+				{ EResource.Recruits, recruits }
 			};
 		}
 

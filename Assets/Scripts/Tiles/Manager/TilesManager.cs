@@ -9,7 +9,9 @@ namespace Tiles.Manager
 	public class TilesManager
     {
         public event Action<Tile[][]> OnGridCreated;
-        public event Action<TileFill> OnFillSelected; 
+        public event Action<TileFill> OnFillSelected;
+
+        public event Action<Tile> OnTileSelected;
 		
 		private Tile[][] _tiles;
 
@@ -129,10 +131,13 @@ namespace Tiles.Manager
 
         private void TileClick(Tile tile)
         {
-            if (_selectedFill == null)
-                return;
-
             if (tile.Filled)
+            {
+                OnTileSelected?.Invoke(tile);
+                return;
+            }
+            
+            if (_selectedFill == null)
                 return;
 
             if (!tile.Available)

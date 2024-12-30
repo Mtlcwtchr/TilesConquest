@@ -8,6 +8,8 @@ namespace Tiles.Model
 		public event Action<Tile> OnMouseClick; 
 		
 		public bool Filled { get; private set; }
+
+		public TileFill Fill => _fill;
 		
 		public Vector2Int Position { get; }
 		

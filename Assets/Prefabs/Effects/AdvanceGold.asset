@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6704f382949d499e844fc7bed47880f4, type: 3}
   m_Name: AdvanceGold
   m_EditorClassIdentifier: 
-  description: Advance Gold
-  icon: {fileID: 0}
+  description: Advance Gold for $gold
+  icon: {fileID: 21300000, guid: 81c13879952e72d408a0cfa362ebfd02, type: 3}
   resources:
   - resource: 0
     value: 10

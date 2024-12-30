@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6704f382949d499e844fc7bed47880f4, type: 3}
-  m_Name: AdvanceFood
+  m_Name: AdvanceRecruits
   m_EditorClassIdentifier: 
-  description: Advance Food for $food
-  icon: {fileID: 21300000, guid: d0ce71c6af7fe5543837bcdb642c9b8c, type: 3}
+  description: Advance Recruits for $recruits
+  icon: {fileID: 21300000, guid: fce4233bc4c2bef44ab973c81c60d2bd, type: 3}
   resources:
-  - resource: 2
-    value: 10
+  - resource: 3
+    value: 2
