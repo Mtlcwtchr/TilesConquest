@@ -147,6 +147,21 @@ namespace Tiles.Manager
             NotifyTileFilled();
         }
 
+        public Tile GetTile(Vector2Int position)
+        {
+            return _tiles[position.x][position.y];
+        }
+
+        public Tile GetRandomActive()
+        {
+            return _activeTiles.GetRandom();
+        }
+
+        public List<Tile> GetActiveTiles()
+        {
+            return _activeTiles;
+        }
+
         public void SetHighlighted(bool isHighlighted)
         {
             for (var i = 0; i < _availablePlaces.Count; i++)

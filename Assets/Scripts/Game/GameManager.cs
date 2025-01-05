@@ -41,7 +41,7 @@ namespace Game
 		{
 			if (_playersQueue.Count < 1)
 			{
-				await Task.Delay(5000);
+				await Task.Delay(100);
 				OnTurnFinish?.Invoke();
 				return;
 			}

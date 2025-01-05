@@ -9,6 +9,7 @@ using UI.Storage;
 using UI.TilesControl;
 using UI.TilesInfo;
 using UI.Turn;
+using Unit.Raid;
 using UnityEngine;
 using World;
 
@@ -30,6 +31,8 @@ namespace Startup
 
 		[SerializeField] private TilesControlPanelView tilesControlPanel;
 
+		[SerializeField] private RaidView raid;
+
 		private float _deltaTime;
 
 		private World.World _world;
@@ -49,8 +52,11 @@ namespace Startup
 			var bag = new TilesBag(bagView, pool, manager);
 			bagView.Init(bag);
 
+			var raidManager = new RaidManager();
+
 			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food, EResource.Recruits);
-			_world = new World.World(storage, manager);
+			_world = new World.World(storage, manager, raidManager);
+			raidManager.SetWorld(_world);
 
 			var storagePanelModel = new StoragePanel(storagePanel, storage);
 			storagePanel.Init(storagePanelModel);
@@ -70,6 +76,10 @@ namespace Startup
 			_gameManager.OnTurnFinish += UpdateTurn;
 
 			_uiManager = new UIManager(player, bag, tilesControlPanelModel);
+			
+			var raidModel = new Raid(player);
+			raidManager.RegisterRaid(raidModel);
+			raid.Init(raidModel, raidManager);
 			
 			UpdateTurn();
 		}

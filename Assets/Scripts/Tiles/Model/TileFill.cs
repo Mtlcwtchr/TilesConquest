@@ -1,4 +1,5 @@
 ﻿using Effects;
+using Modifiers;
 using Tiles.Config;
 using UnityEngine;
 
@@ -32,6 +33,16 @@ namespace Tiles.Model
 			}
 
 			ActiveFocus?.Apply(this, world);
+		}
+
+		public void ApplyModifier(IModifier modifier)
+		{
+			
+		}
+
+		public void RemoveModifier(IModifier modifier)
+		{
+			
 		}
 	}
 }

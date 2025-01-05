@@ -13,5 +13,20 @@ namespace Utils
 		{
 			return new Vector3(src.x, y, src.y);
 		}
+
+		public static void Clamp(this Vector2Int src)
+		{
+			src.Clamp(new(-1, -1), new(1, 1));
+		}
+
+		public static Vector2Int I(this Vector2 src)
+		{
+			return new Vector2Int((int)src.x, (int)src.y);
+		}
+
+		public static Vector2 F(this Vector2Int src)
+		{
+			return src;
+		}
 	}
 }
