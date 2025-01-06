@@ -32,22 +32,26 @@ namespace Unit.Raid.Target
 
 		public void Advance()
 		{
-			var dir = GetNextPos();
-			if (dir == Vector2Int.zero)
+			var prevIndex = _currentPathIndex;
+			var nextIndex = GetNextIndex();
+			if (nextIndex == -1)
 			{
 				Cancel();
 				return;
 			}
 
-			_raid.Move(dir);
+			_raid.Move(_path, prevIndex, nextIndex);
 		}
 
-		private Vector2Int GetNextPos()
+		private int GetNextIndex()
 		{
-			if(_currentPathIndex >= _path.Count)
-				return Vector2Int.zero;
+			if (_currentPathIndex >= _path.Count - 1)
+				return -1;
 			
-			return _path[_currentPathIndex++];
+			_currentPathIndex += _raid.Speed;
+			_currentPathIndex = Mathf.Min(_currentPathIndex, _path.Count - 1);
+
+			return _currentPathIndex;
 		}
 
 		private void CalculatePath()
@@ -57,7 +61,7 @@ namespace Unit.Raid.Target
 			var pf = new Pathfinding();
 			var path = pf.FindPath(_raid.Position, _moveToPosition, availablePositions);
 			_path = path;
-			_currentPathIndex = 1;
+			_currentPathIndex = 0;
 			
 			for (var i = 0; i < path.Count - 1; i++)
 			{

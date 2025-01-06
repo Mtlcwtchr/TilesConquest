@@ -9,6 +9,7 @@ using UI.Storage;
 using UI.TilesControl;
 using UI.TilesInfo;
 using UI.Turn;
+using Unit;
 using Unit.Raid;
 using UnityEngine;
 using World;
@@ -32,6 +33,8 @@ namespace Startup
 		[SerializeField] private TilesControlPanelView tilesControlPanel;
 
 		[SerializeField] private RaidView raid;
+
+		[SerializeField] private UnitView unit;
 
 		private float _deltaTime;
 
@@ -80,6 +83,14 @@ namespace Startup
 			var raidModel = new Raid(player);
 			raidManager.RegisterRaid(raidModel);
 			raid.Init(raidModel, raidManager);
+
+			for (int i = 0; i < 5; ++i)
+			{
+				var newUnit = Instantiate(unit);
+				var unitModel = new Unit.Unit(newUnit);
+				newUnit.Init(unitModel);
+				raidModel.TryAddUnit(unitModel);
+			}
 			
 			UpdateTurn();
 		}

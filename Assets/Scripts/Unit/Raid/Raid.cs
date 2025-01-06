@@ -8,28 +8,20 @@ namespace Unit.Raid
 {
 	public class Raid
 	{
-		public event Action<Vector2Int> OnPositionUpdate;
+		public event Action<List<Vector2Int>, int, int> OnPositionUpdate;
+		public event Action<Unit> OnUnitAdded;
+		public event Action<Unit> OnUnitRemoved;
 		
 		private const int MaxUnits = 5;
 
 		private Player _owner;
 		private List<Unit> _units;
-		private Vector2Int _position;
 
 		private ITarget _target;
 
-		public Vector2Int Position
-		{
-			get => _position;
-			set
-			{
-				if (value == _position)
-					return;
+		public Vector2Int Position { get; set; }
 
-				_position = value;
-				OnPositionUpdate?.Invoke(_position);
-			}
-		}
+		public int Speed { get; private set; } = 2;
 
 		public Raid(Player owner)
 		{
@@ -48,12 +40,19 @@ namespace Unit.Raid
 				return false;
 
 			_units.Add(unit);
+			OnUnitAdded?.Invoke(unit);
 			return true;
 		}
 
 		public bool TryRemoveUnit(Unit unit)
 		{
-			return _units.Remove(unit);
+			if (_units.Remove(unit))
+			{
+				OnUnitRemoved?.Invoke(unit);
+				return true;
+			}
+
+			return false;
 		}
 
 		public void SetTarget(ITarget target)
@@ -64,9 +63,10 @@ namespace Unit.Raid
 			_target.Start();
 		}
 
-		public void Move(Vector2Int position)
+		public void Move(List<Vector2Int> path, int indexFrom, int indexTo)
 		{
-			Position = position;
+			Position = path[indexTo];
+			OnPositionUpdate?.Invoke(path, indexFrom, indexTo);
 		}
 	}
 }
