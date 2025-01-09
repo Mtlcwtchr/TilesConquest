@@ -5,7 +5,7 @@ namespace Tiles.Model
 {
 	public class Tile
 	{
-		public event Action<Tile> OnMouseClick; 
+		public event Action<Tile, bool> OnSelect; 
 		
 		public bool Filled { get; private set; }
 
@@ -32,7 +32,7 @@ namespace Tiles.Model
 		public void BindView(TileView view)
 		{
 			_view = view;
-			_view.OnMouseClick += MouseClick;
+			_view.OnSelect += Select;
 		}
 
 		public void SetFill(TileFill fill)
@@ -48,9 +48,9 @@ namespace Tiles.Model
 			_fill?.ApplyEffects(world);
 		}
 
-		private void MouseClick()
+		private void Select(bool primary)
 		{
-			OnMouseClick?.Invoke(this);
+			OnSelect?.Invoke(this, primary);
 		}
 	}
 }

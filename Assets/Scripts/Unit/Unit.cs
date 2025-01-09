@@ -1,23 +1,38 @@
-﻿namespace Unit
+﻿using System.Collections.Generic;
+using Unit.Config;
+using Unit.Creation;
+using Unit.Wearing;
+
+namespace Unit
 {
 	public class Unit
 	{
-		private int _maxHp;
-		private int _hp;
-		private int _damage;
-		private int _range;
-
-		private int _priority = 1;
-
-		public float RelativeHP => _hp / (float)_maxHp;
-
-		public int Priority => _priority;
+		public int MaxHp { get; }
+		public int Hp { get; }
+		public int Damage { get; }
+		public int Speed { get; }
+		public int Priority { get; }
 		
+		public float RelativeHp => Hp / (float)MaxHp;
+
 		public UnitView View { get; private set; }
 
-		public Unit(UnitView view)
+		public Dictionary<EWearingSlot, IWearing> Wearings { get; }
+
+		public UnitConfig Config { get; }
+
+		public Unit(UnitView view, UnitTemplate unit)
 		{
+			Config = unit.Config;
+			
+			MaxHp = unit.Hp;
+			Hp = unit.Hp;
+			Damage = unit.Damage;
+			Speed = unit.Speed;
+			Priority = unit.Priority;
 			View = view;
+
+			Wearings = new(unit.Wearings);
 		}
 	}
 }

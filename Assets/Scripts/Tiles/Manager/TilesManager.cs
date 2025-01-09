@@ -11,7 +11,7 @@ namespace Tiles.Manager
         public event Action<Tile[][]> OnGridCreated;
         public event Action<TileFill> OnFillSelected;
 
-        public event Action<Tile> OnTileSelected;
+        public event Action<Tile, bool> OnTileSelected;
 		
 		private Tile[][] _tiles;
 
@@ -38,7 +38,7 @@ namespace Tiles.Manager
                 {
                     var tile = new Tile(new(i, j));
                     _tiles[i][j] = tile;
-                    tile.OnMouseClick += TileClick;
+                    tile.OnSelect += TileClick;
                 }
             }
 
@@ -129,13 +129,16 @@ namespace Tiles.Manager
             OnFillSelected?.Invoke(null);
         }
 
-        private void TileClick(Tile tile)
+        private void TileClick(Tile tile, bool primary)
         {
             if (tile.Filled)
             {
-                OnTileSelected?.Invoke(tile);
+                OnTileSelected?.Invoke(tile, primary);
                 return;
             }
+
+            if (!primary)
+                return;
             
             if (_selectedFill == null)
                 return;

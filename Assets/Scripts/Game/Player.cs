@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Tiles.Manager;
 using Tiles.Model;
-using UI.Turn;
 
 namespace Game
 {

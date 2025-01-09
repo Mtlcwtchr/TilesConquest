@@ -3,14 +3,12 @@ using Tiles.Model;
 
 namespace UI.TilesInfo
 {
-	public class TilesInfoPanel
+	public class TilesInfoPanel : UIModel<TilesInfoPanelView>
 	{
-		private TilesInfoPanelView _view;
 		private TilesManager _manager;
 
-		public TilesInfoPanel(TilesInfoPanelView view, TilesManager manager)
+		public TilesInfoPanel(TilesInfoPanelView view, TilesManager manager) : base(view)
 		{
-			_view = view;
 			_manager = manager;
 			
 			_manager.OnFillSelected += FillSelected;
@@ -26,16 +24,6 @@ namespace UI.TilesInfo
 			
 			_view.Tile = fill;
 			Show();
-		}
-
-		public void Show()
-		{
-			_view.Show();
-		}
-
-		public void Hide()
-		{
-			_view.Hide();
 		}
 	}
 }

@@ -1,18 +1,21 @@
 ﻿using System;
+using Game;
 using Tiles.Model;
 using UnityEngine;
 
 namespace Tiles
 {
-	public class TileView : MonoBehaviour
+	public class TileView : MonoBehaviour, ISelectable
 	{
-		public event Action OnMouseClick;
+		public event Action<bool> OnSelect;
 		
 		[SerializeField] private GameObject highlight;
-        
-		public bool Highlighted { get => highlight.activeSelf; set => highlight.SetActive(value); }
 		
 		private Tile _model;
+
+		private GameObject _visual;
+        
+		public bool Highlighted { get => highlight.activeSelf; set => highlight.SetActive(value); }
 		
 		public void Init(Tile model)
 		{
@@ -23,12 +26,12 @@ namespace Tiles
 		public void UpdateFill(TileFill fill)
 		{
 			var viewPattern = fill.Config.fillView;
-			var view = Instantiate(viewPattern, transform);
+			_visual = Instantiate(viewPattern, transform);
 		}
 
-		private void OnMouseUpAsButton()
+		public void Select(bool primary)
 		{
-			OnMouseClick?.Invoke();
+			OnSelect?.Invoke(primary);
 		}
 	}
 }

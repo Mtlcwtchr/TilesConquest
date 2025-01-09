@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Game;
 using UnityEngine;
 using Utils;
 
 namespace Unit.Raid
 {
-	public class RaidView : MonoBehaviour
+	public class RaidView : MonoBehaviour, ISelectable
 	{
 		[Serializable]
 		private class Placeholder
@@ -15,20 +16,19 @@ namespace Unit.Raid
 			public Transform root;
 			public Unit unit;
 		}
+
+		public event Action<bool> OnSelect;
 		
 		[SerializeField] private Placeholder[] placeholders;
 		
 		private Vector2 _currentPosition;
 		private Raid _model;
 
-		private RaidManager _manager;
-
 		private List<Placeholder> _placeholders = new ();
 		private List<UnitView> _units = new();
 		
-		public void Init(Raid model, RaidManager manager)
+		public void Init(Raid model)
 		{
-			_manager = manager;
 			_model = model;
 			_model.Position = transform.position.V2().I();
 			_currentPosition = _model.Position;
@@ -116,9 +116,9 @@ namespace Unit.Raid
 			}
 		}
 
-		private void OnMouseDown()
+		public void Select(bool primary)
 		{
-			_manager.MoveToRandom(_model);
+			OnSelect?.Invoke(primary);
 		}
 	}
 }

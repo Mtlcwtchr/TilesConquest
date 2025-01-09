@@ -3,22 +3,28 @@ using Tiles.Model;
 
 namespace Unit.Raid.Target
 {
-	public class HoldTileTarget : ITarget
+	public class HoldTileTarget : Target
 	{
 		private IModifier _holdModifier;
 		private Tile _holdingTile;
-		private Raid _raid;
 
-		public void Start()
+		public HoldTileTarget(Raid raid, Tile tile) : base(raid)
+		{
+			_holdingTile = tile;
+		}
+		
+		public override void Start()
 		{
 			_holdingTile.Fill.ApplyModifier(_holdModifier);
 		}
 
-		public void Advance() { }
+		public override void Advance() { }
 
-		public void Cancel()
+		public override void Cancel()
 		{
 			_holdingTile.Fill.RemoveModifier(_holdModifier);
+			
+			base.Cancel();
 		}
 	}
 }

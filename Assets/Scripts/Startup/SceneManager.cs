@@ -5,11 +5,13 @@ using Tiles.Manager;
 using Tiles.Pool;
 using UI.Bag;
 using UI.Manager;
+using UI.Raid.Creation;
 using UI.Storage;
 using UI.TilesControl;
 using UI.TilesInfo;
 using UI.Turn;
-using Unit;
+using Unit.Config;
+using Unit.Creation;
 using Unit.Raid;
 using UnityEngine;
 using World;
@@ -32,9 +34,9 @@ namespace Startup
 
 		[SerializeField] private TilesControlPanelView tilesControlPanel;
 
-		[SerializeField] private RaidView raid;
+		[SerializeField] private UnitCreationPanelView creationPanel;
 
-		[SerializeField] private UnitView unit;
+		[SerializeField] private UnitConfig unit;
 
 		private float _deltaTime;
 
@@ -79,18 +81,12 @@ namespace Startup
 			_gameManager.OnTurnFinish += UpdateTurn;
 
 			_uiManager = new UIManager(player, bag, tilesControlPanelModel);
-			
-			var raidModel = new Raid(player);
-			raidManager.RegisterRaid(raidModel);
-			raid.Init(raidModel, raidManager);
 
-			for (int i = 0; i < 5; ++i)
-			{
-				var newUnit = Instantiate(unit);
-				var unitModel = new Unit.Unit(newUnit);
-				newUnit.Init(unitModel);
-				raidModel.TryAddUnit(unitModel);
-			}
+			var creationModel = new UnitCreationPanel(creationPanel);
+			creationPanel.Init(creationModel);
+
+			creationModel.Template = new UnitTemplate(unit);
+			creationModel.Show();
 			
 			UpdateTurn();
 		}

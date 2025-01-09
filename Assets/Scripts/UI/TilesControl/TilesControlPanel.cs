@@ -42,13 +42,16 @@ namespace UI.TilesControl
 			Hide();
 		}
 
-		private void TileSelected(Tile tile)
+		private void TileSelected(Tile tile, bool primary)
 		{
 			if (tile == null)
 			{
 				Hide();
 				return;
 			}
+
+			if (!primary)
+				return;
 
 			Tile = tile;
 			Show();

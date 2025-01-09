@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Utils;
 
 namespace Unit.Raid.Target
 {
-	public class MoveToTileTarget : ITarget
+	public class MoveToTileTarget : Target
 	{
-		public event Action OnCancelled;
-		
 		private Vector2Int _moveToPosition;
-		private Raid _raid;
 
 		private World.World _world;
 
 		private List<Vector2Int> _path;
 		private int _currentPathIndex;
 
-		public MoveToTileTarget(Raid raid, World.World world, Vector2Int position)
+		public MoveToTileTarget(Raid raid, World.World world, Vector2Int position) : base(raid)
 		{
 			_world = world;
-			_raid = raid;
 			_moveToPosition = position;
 		}
 		
-		public void Start()
+		public override void Start()
 		{
 			CalculatePath();
 		}
 
-		public void Advance()
+		public override void Advance()
 		{
 			var prevIndex = _currentPathIndex;
 			var nextIndex = GetNextIndex();
@@ -67,11 +62,6 @@ namespace Unit.Raid.Target
 			{
 				Debug.DrawLine(path[i].F().V3(0.3f), path[i + 1].F().V3(0.3f), Color.red, 360);
 			}
-		}
-
-		public void Cancel()
-		{
-			OnCancelled?.Invoke();
 		}
 	}
 }

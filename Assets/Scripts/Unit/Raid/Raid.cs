@@ -8,6 +8,7 @@ namespace Unit.Raid
 {
 	public class Raid
 	{
+		public event Action<Raid, bool> OnSelected;
 		public event Action<List<Vector2Int>, int, int> OnPositionUpdate;
 		public event Action<Unit> OnUnitAdded;
 		public event Action<Unit> OnUnitRemoved;
@@ -15,18 +16,29 @@ namespace Unit.Raid
 		private const int MaxUnits = 5;
 
 		private Player _owner;
-		private List<Unit> _units;
 
 		private ITarget _target;
 
+		private RaidView _view;
+
 		public Vector2Int Position { get; set; }
 
-		public int Speed { get; private set; } = 2;
+		public int Speed { get; private set; }
+		public int MaxHp { get; private set; }
+		public int Hp { get; private set; }
+		public int Damage { get; private set; }
 
-		public Raid(Player owner)
+		public float RelativeHp => Hp / (float)MaxHp;
+			
+		public List<Unit> Units { get; }
+
+		public Raid(RaidView view, Player owner)
 		{
+			_view = view;
 			_owner = owner;
-			_units = new List<Unit>(MaxUnits);
+			Units = new List<Unit>(MaxUnits);
+			
+			_view.OnSelect += ViewSelect;
 		}
 
 		public void Update()
@@ -36,23 +48,44 @@ namespace Unit.Raid
 
 		public bool TryAddUnit(Unit unit)
 		{
-			if (_units.Count >= MaxUnits)
+			if (Units.Count >= MaxUnits)
 				return false;
 
-			_units.Add(unit);
+			Units.Add(unit);
+			CalculateUnitsData();
 			OnUnitAdded?.Invoke(unit);
 			return true;
 		}
 
 		public bool TryRemoveUnit(Unit unit)
 		{
-			if (_units.Remove(unit))
+			if (Units.Remove(unit))
 			{
+				CalculateUnitsData();
 				OnUnitRemoved?.Invoke(unit);
 				return true;
 			}
 
 			return false;
+		}
+
+		private void CalculateUnitsData()
+		{
+			MaxHp = 0;
+			Hp = 0;
+			Damage = 0;
+			Speed = int.MaxValue;
+			
+			for (var i = 0; i < Units.Count; i++)
+			{
+				var unit = Units[i];
+
+				MaxHp += unit.MaxHp;
+				Hp += unit.Hp;
+				Damage += unit.Damage;
+
+				Speed = Mathf.Min(unit.Speed, Speed);
+			}
 		}
 
 		public void SetTarget(ITarget target)
@@ -67,6 +100,11 @@ namespace Unit.Raid
 		{
 			Position = path[indexTo];
 			OnPositionUpdate?.Invoke(path, indexFrom, indexTo);
+		}
+
+		private void ViewSelect(bool primary)
+		{
+			OnSelected?.Invoke(this, primary);
 		}
 	}
 }

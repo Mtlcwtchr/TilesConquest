@@ -1,18 +1,39 @@
+using System;
+using Unit.Visual;
+using Unit.Wearing;
 using UnityEngine;
 
 namespace Unit
 {
     public class UnitView : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
-
         private EUnitState _currentState;
+
+        public UnitVisualisation Visualisation { get; private set; }
+
+        private Unit _model;
 
         public void Init(Unit model)
         {
+            _model = model;
             
+            Visualisation = Instantiate(model.Config.visualBase, transform);
+            foreach (var (_, wearing) in model.Wearings)
+            {
+                Visualisation.AddWearing(wearing);
+            }
         }
-        
+
+        private void WearingUnEquip(EWearingSlot wearing)
+        {
+            Visualisation.RemoveWearing(wearing);
+        }
+
+        private void WearingEquip(IWearing wearing)
+        {
+            Visualisation.AddWearing(wearing);
+        }
+
         public void SetPlaceholder(Transform root)
         {
             transform.SetParent(root, false);
@@ -24,7 +45,7 @@ namespace Unit
                 return;
             
             _currentState = state;
-            animator.SetTrigger(UnitStateAnimations.Get(state));
+            Visualisation.Animator.SetTrigger(UnitStateAnimations.Get(state));
         }
     }
 }
