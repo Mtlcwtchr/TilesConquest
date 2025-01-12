@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb182ce2b11424b8afe1ce7cbcd553a, type: 3}
-  m_Name: Sword_1
+  m_Script: {fileID: 11500000, guid: ff7ecd4c0a064d809017805e776022ad, type: 3}
+  m_Name: Weapon_Sword_Long
   m_EditorClassIdentifier: 
   title: Sword
-  description: Default Sword
+  description: 
+  icon: {fileID: 21300070, guid: f5f1c19ce87450f4b97f8b363746558d, type: 3}
   visual: {fileID: 6697697094350076156, guid: 5639a57b0c75e5749a0cb642739826dc, type: 3}
   slot: 2
+  damage: 15

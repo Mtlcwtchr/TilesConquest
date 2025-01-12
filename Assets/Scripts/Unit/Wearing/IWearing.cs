@@ -1,4 +1,4 @@
-﻿using Unit.Config;
+﻿using Unit.Config.Wearing;
 using Unit.Creation;
 
 namespace Unit.Wearing

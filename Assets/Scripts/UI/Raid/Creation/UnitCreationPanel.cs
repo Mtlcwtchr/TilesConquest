@@ -1,4 +1,4 @@
-﻿using Unit.Config;
+﻿using UI.Raid.Creation.Wearing;
 using Unit.Creation;
 using Unit.Wearing;
 
@@ -6,7 +6,9 @@ namespace UI.Raid.Creation
 {
 	public class UnitCreationPanel : UIModel<UnitCreationPanelView>
 	{
-		private UnitCreationPanelView _view;
+		private WearingSelectionPanel _wearingPanel;
+		
+		private World.World _world;
 
 		public UnitTemplate Template
 		{
@@ -14,22 +16,42 @@ namespace UI.Raid.Creation
 			set => _view.Template = value;
 		}
 		
-		public UnitCreationPanel(UnitCreationPanelView view) : base(view)
+		public UnitCreationPanel(UnitCreationPanelView view, WearingSelectionPanel panel, World.World world) : base(view)
 		{
 			_view = view;
+			_wearingPanel = panel;
+			_world = world;
 			
-			_view.OnButtonClick += TestButtonClick;
+			_wearingPanel.OnWearingSelected += WearingSelected;
+			_wearingPanel.OnSlotSelected += SlotSelected;
 		}
 
-		private void TestButtonClick(WearingConfig wearingConfig)
+		private void SlotSelected(EWearingSlot slot)
 		{
-			var sword = new TestSword(wearingConfig);
-			if (Template.Wearings.TryGetValue(wearingConfig.slot, out var value) && value != null)
+			var wearings = _world.Forge.Get(slot);
+			_wearingPanel.Wearings = wearings;
+			
+			_wearingPanel.UpdateSelection(Template.GetEquipped(slot));
+		}
+
+		private void WearingSelected(IWearing wearing)
+		{
+			if (Template.Equipped(wearing))
 			{
-				Template.UnEquipCurrent(wearingConfig.slot);
-				return;
+				Template.UnEquipCurrent(wearing.Slot);
+				_wearingPanel.UpdateSelection(null);
 			}
-			Template.TryEquip(sword);
+			else
+			{
+				var equipped = Template.TryEquip(wearing);
+				_wearingPanel.UpdateSelection(equipped ? wearing : null);
+			}
+		}
+
+		public override void Show()
+		{
+			SlotSelected(EWearingSlot.HandL);
+			base.Show();
 		}
 	}
 }

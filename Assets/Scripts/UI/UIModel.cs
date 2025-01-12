@@ -11,12 +11,12 @@
 			_view = view;
 		}
 
-		public void Show()
+		public virtual void Show()
 		{
 			_view.Show();
 		}
 
-		public void Hide()
+		public virtual void Hide()
 		{
 			_view.Hide();
 		}

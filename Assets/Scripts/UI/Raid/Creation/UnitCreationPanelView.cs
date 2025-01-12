@@ -1,21 +1,13 @@
-﻿using System;
-using Unit.Config;
-using Unit.Creation;
+﻿using Unit.Creation;
 using Unit.Visual;
 using Unit.Wearing;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI.Raid.Creation
 {
 	public class UnitCreationPanelView : UIView
 	{
-		public event Action<WearingConfig> OnButtonClick; 
-		
 		[SerializeField] private Transform visualisationRoot;
-
-		[SerializeField] private Button weaponButton;
-		[SerializeField] private WearingConfig weapon;
 
 		private UnitCreationPanel _model;
 		
@@ -65,16 +57,6 @@ namespace UI.Raid.Creation
 			_visualisation.RemoveWearing(obj);
 		}
 
-		private void Awake()
-		{
-			weaponButton.onClick.AddListener(ButtonClick);
-		}
-
-		private void OnDestroy()
-		{
-			weaponButton.onClick.RemoveListener(ButtonClick);
-		}
-
 		public void Init(UnitCreationPanel model)
 		{
 			_model = model;
@@ -95,11 +77,6 @@ namespace UI.Raid.Creation
 			{
 				_visualisation.AddWearing(wearing);
 			}
-		}
-
-		private void ButtonClick()
-		{
-			OnButtonClick?.Invoke(weapon);
 		}
 		
 	}

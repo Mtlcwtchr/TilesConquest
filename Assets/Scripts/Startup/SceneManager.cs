@@ -6,6 +6,7 @@ using Tiles.Pool;
 using UI.Bag;
 using UI.Manager;
 using UI.Raid.Creation;
+using UI.Raid.Creation.Wearing;
 using UI.Storage;
 using UI.TilesControl;
 using UI.TilesInfo;
@@ -15,6 +16,8 @@ using Unit.Creation;
 using Unit.Raid;
 using UnityEngine;
 using World;
+using World.Era;
+using World.Era.Config;
 
 namespace Startup
 {
@@ -38,6 +41,9 @@ namespace Startup
 
 		[SerializeField] private UnitConfig unit;
 
+		[SerializeField] private EraConfig eraConfig;
+		[SerializeField] private WearingSelectionPanelView panelView;
+
 		private float _deltaTime;
 
 		private World.World _world;
@@ -59,8 +65,11 @@ namespace Startup
 
 			var raidManager = new RaidManager();
 
+			var era = new Era(eraConfig);
+
 			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food, EResource.Recruits);
-			_world = new World.World(storage, manager, raidManager);
+			var forge = new Forge(era);
+			_world = new World.World(era, storage, forge, manager, raidManager);
 			raidManager.SetWorld(_world);
 
 			var storagePanelModel = new StoragePanel(storagePanel, storage);
@@ -82,7 +91,8 @@ namespace Startup
 
 			_uiManager = new UIManager(player, bag, tilesControlPanelModel);
 
-			var creationModel = new UnitCreationPanel(creationPanel);
+			var wearingModel = new WearingSelectionPanel(panelView);
+			var creationModel = new UnitCreationPanel(creationPanel, wearingModel, _world);
 			creationPanel.Init(creationModel);
 
 			creationModel.Template = new UnitTemplate(unit);

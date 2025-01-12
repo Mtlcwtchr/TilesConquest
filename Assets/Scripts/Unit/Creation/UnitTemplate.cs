@@ -62,5 +62,15 @@ namespace Unit.Creation
 			Wearings[slot] = null;
 			OnWearingUnEquip?.Invoke(slot);
 		}
+
+		public bool Equipped(IWearing wearing)
+		{
+			return Wearings.TryGetValue(wearing.Slot, out var currentlyEquipped) && currentlyEquipped == wearing;
+		}
+
+		public IWearing GetEquipped(EWearingSlot slot)
+		{
+			return Wearings.GetValueOrDefault(slot);
+		}
 	}
 }
