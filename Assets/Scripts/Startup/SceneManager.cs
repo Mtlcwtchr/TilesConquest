@@ -6,7 +6,9 @@ using Tiles.Pool;
 using UI.Bag;
 using UI.Manager;
 using UI.Raid.Creation;
-using UI.Raid.Creation.Wearing;
+using UI.Raid.Creation.Unit;
+using UI.Raid.Creation.Unit.Wearing;
+using UI.Raid.Info;
 using UI.Storage;
 using UI.TilesControl;
 using UI.TilesInfo;
@@ -15,9 +17,11 @@ using Unit.Config;
 using Unit.Creation;
 using Unit.Raid;
 using UnityEngine;
+using UnityEngine.UI;
 using World;
 using World.Era;
 using World.Era.Config;
+using World.Units;
 
 namespace Startup
 {
@@ -44,6 +48,14 @@ namespace Startup
 		[SerializeField] private EraConfig eraConfig;
 		[SerializeField] private WearingSelectionPanelView panelView;
 
+		[SerializeField] private RaidCreationPanelView raidCreationView;
+
+		[SerializeField] private Button test;
+
+		[SerializeField] private RaidView raid;
+
+		[SerializeField] private RaidInfoPanelView raidInfoPanel;
+
 		private float _deltaTime;
 
 		private World.World _world;
@@ -63,13 +75,14 @@ namespace Startup
 			var bag = new TilesBag(bagView, pool, manager);
 			bagView.Init(bag);
 
-			var raidManager = new RaidManager();
+			var raidManager = new RaidManager(raid);
 
 			var era = new Era(eraConfig);
 
 			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food, EResource.Recruits);
 			var forge = new Forge(era);
-			_world = new World.World(era, storage, forge, manager, raidManager);
+			var recruitHouse = new RecruitHouse(era);
+			_world = new World.World(era, storage, forge, recruitHouse, manager, raidManager);
 			raidManager.SetWorld(_world);
 
 			var storagePanelModel = new StoragePanel(storagePanel, storage);
@@ -92,11 +105,23 @@ namespace Startup
 			_uiManager = new UIManager(player, bag, tilesControlPanelModel);
 
 			var wearingModel = new WearingSelectionPanel(panelView);
+			panelView.Init();
 			var creationModel = new UnitCreationPanel(creationPanel, wearingModel, _world);
 			creationPanel.Init(creationModel);
 
-			creationModel.Template = new UnitTemplate(unit);
-			creationModel.Show();
+			var raidCreation = new RaidCreationPanel(raidCreationView, creationModel, raidManager);
+			raidCreationView.Init();
+
+			var raidInfoModel = new RaidInfoPanel(raidInfoPanel, raidManager);
+			raidInfoPanel.Init(raidInfoModel);
+			
+			test.onClick.AddListener(() =>
+			{
+				raidCreation.RaidTemplate = new RaidTemplate(player);
+				raidCreation.Archetypes = _world.RecruitHouse.Archetypes;
+				raidCreation.Position = manager.GetCapital().Position;
+				raidCreation.Show();
+			});
 			
 			UpdateTurn();
 		}

@@ -205,6 +205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3277dd0c354b53b3d0da8cc2b30f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitView: {fileID: 8250344206473415485, guid: 30291e4e2223cf947a62449934983c40,
+    type: 3}
   placeholders:
   - priority: 1
     root: {fileID: 6970069196918161549}

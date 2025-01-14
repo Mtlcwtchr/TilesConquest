@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using TMPro;
+using UI.Raid.Creation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,38 +8,64 @@ namespace UI.Raid.Info
 {
 	public class RaidInfoPanelView : UIView
 	{
+		public event Action OnClose;
+		
+		[SerializeField] private RaidTemplateView raidTemplate;
+		[SerializeField] private Transform raidRoot;
+		
 		[SerializeField] private TMP_Text hp;
 		[SerializeField] private TMP_Text damage;
 		[SerializeField] private TMP_Text speed;
 		[SerializeField] private Image hpBar;
 
-		[SerializeField] private List<UnitInfoElement> unitElements;
+		[SerializeField] private Button closeButton;
+
+		private RaidInfoPanel _model;
+
+		private RaidTemplateView _templateView;
+		
+		private Unit.Raid.Raid _raid;
 
 		public Unit.Raid.Raid Raid
 		{
+			get => _raid;
 			set
 			{
-				hp.text = $"{value.Hp}/{value.MaxHp}";
-				damage.text = value.Damage.ToString();
-				speed.text = value.Speed.ToString();
-				hpBar.fillAmount = value.RelativeHp;
-
-				DrawUnits(value.Units);
+				_raid = value;
+				
+				hp.text = $"{_raid.Hp}/{_raid.MaxHp}";
+				damage.text = _raid.Damage.ToString();
+				speed.text = _raid.Speed.ToString();
+				hpBar.fillAmount = _raid.RelativeHp;
+				
+				CreateVisualisation();
 			}
 		}
 
-		private void DrawUnits(List<Unit.Unit> units)
+		private void Awake()
 		{
-			for (var i = 0; i < units.Count; i++)
+			closeButton.onClick.AddListener(CloseClick);
+		}
+
+		public void Init(RaidInfoPanel model)
+		{
+			_model = model;
+		}
+
+		private void CreateVisualisation()
+		{
+			if (_templateView != null)
 			{
-				unitElements[i].Unit = units[i];
-				unitElements[i].Show();
+				Destroy(_templateView.gameObject);
 			}
-			
-			for (var i = units.Count; i < unitElements.Count; i++)
-			{
-				unitElements[i].Hide();
-			}
+
+			_templateView = Instantiate(raidTemplate, raidRoot);
+			_templateView.Init(Raid.Template);
+		}
+
+		private void CloseClick()
+		{
+			OnClose?.Invoke();
 		}
 	}
 }

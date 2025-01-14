@@ -13,6 +13,8 @@ namespace Unit.Config
 		public int damage;
 		public int speed;
 		public int priority;
+
+		public Sprite icon;
 		
 		public UnitVisualisation visualBase;
 		public EWearingSlotMask availableWearings;

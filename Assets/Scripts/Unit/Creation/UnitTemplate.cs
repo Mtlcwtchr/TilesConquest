@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Unit.Config;
+using Unit.Visual;
 using Unit.Wearing;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Unit.Creation
 {
@@ -15,6 +18,8 @@ namespace Unit.Creation
 		public int Damage { get; set; }
 		public int Speed { get; set; }
 		public int Priority { get; set; }
+		
+		public UnitVisualisation View { get; set; }
 		
 		public Dictionary<EWearingSlot, IWearing> Wearings { get; }
 
@@ -71,6 +76,18 @@ namespace Unit.Creation
 		public IWearing GetEquipped(EWearingSlot slot)
 		{
 			return Wearings.GetValueOrDefault(slot);
+		}
+
+		public UnitVisualisation CreateVisualisation(Transform root, int layer = 0)
+		{
+			var visualisation = Object.Instantiate(Config.visualBase, root);
+			visualisation.Layer = layer;
+			foreach (var (_, wearing) in Wearings)
+			{
+				visualisation.AddWearing(wearing);
+			}
+
+			return visualisation;
 		}
 	}
 }

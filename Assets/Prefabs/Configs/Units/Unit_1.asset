@@ -18,6 +18,7 @@ MonoBehaviour:
   damage: 5
   speed: 2
   priority: 1
+  icon: {fileID: 21300002, guid: f5f1c19ce87450f4b97f8b363746558d, type: 3}
   visualBase: {fileID: 4424464712583436280, guid: 98615b0d70d41c84589057b05eadd866,
     type: 3}
   availableWearings: 37

@@ -1,11 +1,14 @@
-﻿using UI.Raid.Creation.Wearing;
+﻿using System;
+using UI.Raid.Creation.Unit.Wearing;
 using Unit.Creation;
 using Unit.Wearing;
 
-namespace UI.Raid.Creation
+namespace UI.Raid.Creation.Unit
 {
 	public class UnitCreationPanel : UIModel<UnitCreationPanelView>
 	{
+		public event Action<UnitTemplate> OnCreationApplied; 
+		
 		private WearingSelectionPanel _wearingPanel;
 		
 		private World.World _world;
@@ -13,17 +16,23 @@ namespace UI.Raid.Creation
 		public UnitTemplate Template
 		{
 			get => _view.Template;
-			set => _view.Template = value;
+			set
+			{
+				_view.Template = value;
+				_wearingPanel.AvailableSlots = value.Config.availableWearings;
+			}
 		}
 		
 		public UnitCreationPanel(UnitCreationPanelView view, WearingSelectionPanel panel, World.World world) : base(view)
 		{
-			_view = view;
 			_wearingPanel = panel;
 			_world = world;
 			
 			_wearingPanel.OnWearingSelected += WearingSelected;
 			_wearingPanel.OnSlotSelected += SlotSelected;
+			
+			_view.OnApply += Apply;
+			_view.OnClose += Close;
 		}
 
 		private void SlotSelected(EWearingSlot slot)
@@ -52,6 +61,17 @@ namespace UI.Raid.Creation
 		{
 			SlotSelected(EWearingSlot.HandL);
 			base.Show();
+		}
+
+		private void Apply()
+		{
+			Hide();
+			OnCreationApplied?.Invoke(Template);
+		}
+
+		private void Close()
+		{
+			Hide();
 		}
 	}
 }

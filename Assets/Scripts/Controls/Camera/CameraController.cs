@@ -2,11 +2,11 @@
 using UnityEngine;
 using Utils;
 
-namespace Controls
+namespace Controls.Camera
 {
 	public class CameraController : MonoBehaviour
 	{
-		[SerializeField] private Camera camera;
+		[SerializeField] private UnityEngine.Camera camera;
 		[SerializeField] private float speed;
 		
 		[SerializeField] private float zoomSpeed = 10f;

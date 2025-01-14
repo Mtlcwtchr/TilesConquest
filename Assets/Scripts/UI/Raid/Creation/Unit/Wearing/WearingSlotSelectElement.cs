@@ -3,7 +3,7 @@ using Unit.Wearing;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Raid.Creation.Wearing
+namespace UI.Raid.Creation.Unit.Wearing
 {
 	public class WearingSlotSelectElement : UIView
 	{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tiles.Model;
 using UnityEngine;
 using Utils;
@@ -158,6 +159,11 @@ namespace Tiles.Manager
         public Tile GetRandomActive()
         {
             return _activeTiles.GetRandom();
+        }
+
+        public Tile GetCapital()
+        {
+            return _activeTiles.FirstOrDefault();
         }
 
         public List<Tile> GetActiveTiles()

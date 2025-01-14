@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc75b15d70c948c8ba02936434b26e45, type: 3}
+  m_Name: Unit_2
+  m_EditorClassIdentifier: 
+  title: Ded
+  description: Default Footman
+  hp: 100
+  damage: 5
+  speed: 2
+  priority: 0
+  icon: {fileID: 21300116, guid: f5f1c19ce87450f4b97f8b363746558d, type: 3}
+  visualBase: {fileID: 4424464712583436280, guid: 1df624fe92a2a694c99a466d714358e0,
+    type: 3}
+  availableWearings: 5

@@ -1,14 +1,21 @@
-﻿using Unit.Creation;
+﻿using System;
+using Unit.Creation;
 using Unit.Visual;
 using Unit.Wearing;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace UI.Raid.Creation
+namespace UI.Raid.Creation.Unit
 {
 	public class UnitCreationPanelView : UIView
 	{
+		public event Action OnClose;
+		public event Action OnApply;
+		
 		[SerializeField] private Transform visualisationRoot;
-
+		[SerializeField] private Button applyButton;
+		[SerializeField] private Button closeButton;
+		
 		private UnitCreationPanel _model;
 		
 		private UnitVisualisation _visualisation;
@@ -27,6 +34,12 @@ namespace UI.Raid.Creation
 				
 				CreateVisualisation();
 			}
+		}
+
+		private void Awake()
+		{
+			applyButton.onClick.AddListener(ApplyClick);
+			closeButton.onClick.AddListener(CloseClick);
 		}
 
 		private void SubscribeTemplate()
@@ -69,7 +82,7 @@ namespace UI.Raid.Creation
 				Destroy(_visualisation.gameObject);
 			}
 
-			_visualisation = Instantiate(Template.Config.visualBase, visualisationRoot);
+			_visualisation = Template.CreateVisualisation(visualisationRoot, LayerMask.NameToLayer("UI"));
 			_visualisation.transform.localScale = new(200, 200, 1);
 			_visualisation.transform.localRotation = Quaternion.Euler(0, 0, 0);
 			_visualisation.transform.localPosition = new(0, 100, 0);
@@ -77,6 +90,16 @@ namespace UI.Raid.Creation
 			{
 				_visualisation.AddWearing(wearing);
 			}
+		}
+
+		private void ApplyClick()
+		{
+			OnApply?.Invoke();
+		}
+
+		private void CloseClick()
+		{
+			OnClose?.Invoke();
 		}
 		
 	}

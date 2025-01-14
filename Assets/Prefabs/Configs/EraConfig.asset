@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f1043536604f79933344ae1e8f3947, type: 3}
   m_Name: EraConfig
   m_EditorClassIdentifier: 
-  wearingsByEras:
+  eras:
   - era: 0
     level: 1
     wearings:
@@ -26,6 +26,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e65c734a862577a498e9f036834d05c0, type: 2}
     - {fileID: 11400000, guid: c3dd2f55cd9ff164eab69d547305a5f1, type: 2}
     - {fileID: 11400000, guid: 0dcdbde6cd2b2f042bcfc136445cdbca, type: 2}
+    units:
+    - {fileID: 11400000, guid: 61e3103b77096814d9cb360e0b301724, type: 2}
   - era: 1
     level: 1
     wearings: []
+    units:
+    - {fileID: 11400000, guid: 29df7918dd668a64a9260d1e043497e6, type: 2}

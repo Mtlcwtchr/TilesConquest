@@ -15,14 +15,17 @@ namespace Unit
 		
 		public float RelativeHp => Hp / (float)MaxHp;
 
-		public UnitView View { get; private set; }
+		public UnitView View { get; set; }
 
 		public Dictionary<EWearingSlot, IWearing> Wearings { get; }
 
 		public UnitConfig Config { get; }
+		
+		public UnitTemplate Template { get; }
 
-		public Unit(UnitView view, UnitTemplate unit)
+		public Unit(UnitTemplate unit)
 		{
+			Template = unit;
 			Config = unit.Config;
 			
 			MaxHp = unit.Hp;
@@ -30,7 +33,6 @@ namespace Unit
 			Damage = unit.Damage;
 			Speed = unit.Speed;
 			Priority = unit.Priority;
-			View = view;
 
 			Wearings = new(unit.Wearings);
 		}

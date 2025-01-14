@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tiles.Model;
+using Unit.Creation;
 using Unit.Raid.Target;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Unit.Raid
 {
 	public class RaidManager
 	{
+		private RaidView _viewTemplate;
+		
 		public event Action<Raid> OnRaidSelected; 
 		
 		private List<Raid> _raids;
+		private List<RaidView> _views;
 
 		private World.World _world;
 
 		private Raid _selectedRaid;
 
-		public RaidManager()
+		public RaidManager(RaidView viewTemplate)
 		{
 			_raids = new();
+			_views = new();
+
+			_viewTemplate = viewTemplate;
 		}
 
 		public void SetWorld(World.World world)
@@ -27,17 +36,33 @@ namespace Unit.Raid
 			_world.TilesManager.OnTileSelected += TileSelected;
 		}
 
+		public void CreateRaid(RaidTemplate template, Vector2Int position)
+		{
+			var raid = new Raid(template);
+			raid.Position = position;
+
+			RegisterRaid(raid);
+		}
+
 		public void RegisterRaid(Raid raid)
 		{
 			_raids.Add(raid);
+			
+			var raidView = Object.Instantiate(_viewTemplate);
+			raidView.Init(raid);
+			_views.Add(raidView);
 			
 			raid.OnSelected += RaidSelected;
 		}
 
 		public void UnregisterRaid(Raid raid)
 		{
-			_raids.Remove(raid);
-			
+			var raidIndex = _raids.IndexOf(raid);
+			_raids.RemoveAt(raidIndex);
+			var view = _views[raidIndex];
+			Object.Destroy(view.gameObject);
+			_views.RemoveAt(raidIndex);
+
 			raid.OnSelected -= RaidSelected;
 		}
 		

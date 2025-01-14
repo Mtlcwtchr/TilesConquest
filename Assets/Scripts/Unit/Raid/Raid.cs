@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game;
+using Unit.Creation;
 using Unit.Raid.Target;
 using UnityEngine;
 
@@ -12,14 +13,8 @@ namespace Unit.Raid
 		public event Action<List<Vector2Int>, int, int> OnPositionUpdate;
 		public event Action<Unit> OnUnitAdded;
 		public event Action<Unit> OnUnitRemoved;
-		
-		private const int MaxUnits = 5;
-
-		private Player _owner;
 
 		private ITarget _target;
-
-		private RaidView _view;
 
 		public Vector2Int Position { get; set; }
 
@@ -27,18 +22,26 @@ namespace Unit.Raid
 		public int MaxHp { get; private set; }
 		public int Hp { get; private set; }
 		public int Damage { get; private set; }
+		
+		public Player Owner { get; private set; }
 
 		public float RelativeHp => Hp / (float)MaxHp;
 			
 		public List<Unit> Units { get; }
+		
+		public RaidTemplate Template { get; }
 
-		public Raid(RaidView view, Player owner)
+		public Raid(RaidTemplate template)
 		{
-			_view = view;
-			_owner = owner;
-			Units = new List<Unit>(MaxUnits);
-			
-			_view.OnSelect += ViewSelect;
+			Template = template;
+			Owner = template.Owner;
+			Units = new List<Unit>(template.Units.Count);
+			for (var i = 0; i < template.Units.Count; i++)
+			{
+				var unitTemplate = template.Units[i];
+				var unit = new Unit(unitTemplate);
+				TryAddUnit(unit);
+			}
 		}
 
 		public void Update()
@@ -48,9 +51,6 @@ namespace Unit.Raid
 
 		public bool TryAddUnit(Unit unit)
 		{
-			if (Units.Count >= MaxUnits)
-				return false;
-
 			Units.Add(unit);
 			CalculateUnitsData();
 			OnUnitAdded?.Invoke(unit);
@@ -102,7 +102,7 @@ namespace Unit.Raid
 			OnPositionUpdate?.Invoke(path, indexFrom, indexTo);
 		}
 
-		private void ViewSelect(bool primary)
+		public void Select(bool primary)
 		{
 			OnSelected?.Invoke(this, primary);
 		}

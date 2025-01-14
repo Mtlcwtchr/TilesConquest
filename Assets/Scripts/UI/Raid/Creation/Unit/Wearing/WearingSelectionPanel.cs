@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Unit.Wearing;
 
-namespace UI.Raid.Creation.Wearing
+namespace UI.Raid.Creation.Unit.Wearing
 {
 	public class WearingSelectionPanel : UIModel<WearingSelectionPanelView>
 	{

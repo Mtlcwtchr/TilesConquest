@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Game
 {
@@ -9,13 +10,18 @@ namespace Game
 		
 		private void Update()
 		{
-			if (Input.GetKeyUp(KeyCode.Mouse0))
+			if (EventSystem.current.IsPointerOverGameObject())
+			{
+				return;
+			}
+			
+			if (Input.GetKeyDown(KeyCode.Mouse0))
 			{
 				SelectOnMouseClick(true);
 				return;
 			}
 			
-			if (Input.GetKeyUp(KeyCode.Mouse1))
+			if (Input.GetKeyDown(KeyCode.Mouse1))
 			{
 				SelectOnMouseClick(false);
 				return;

@@ -17,8 +17,7 @@ namespace Unit.Raid
 			public Unit unit;
 		}
 
-		public event Action<bool> OnSelect;
-		
+		[SerializeField] private UnitView unitView;
 		[SerializeField] private Placeholder[] placeholders;
 		
 		private Vector2 _currentPosition;
@@ -30,27 +29,20 @@ namespace Unit.Raid
 		public void Init(Raid model)
 		{
 			_model = model;
-			_model.Position = transform.position.V2().I();
 			_currentPosition = _model.Position;
+			transform.position = _currentPosition.V3();
 
 			_placeholders = new List<Placeholder>(placeholders);
 			
 			_model.OnPositionUpdate += UpdatePosition;
-			_model.OnUnitAdded += UnitAdded;
-			_model.OnUnitRemoved += UnitRemoved;
+			
+			for (var i = 0; i < _model.Units.Count; i++)
+			{
+				AddUnit(_model.Units[i]);
+			}
 		}
 
-		private void UnitRemoved(Unit unit)
-		{
-			_units.Remove(unit.View);
-			var placeholder = _placeholders.Find(p => p.unit == unit);
-			if (placeholder == null)
-				return;
-
-			placeholder.unit = null;
-		}
-
-		private void UnitAdded(Unit unit)
+		private void AddUnit(Unit unit)
 		{
 			Placeholder bestPlaceholder = null;
 			var currDelta = int.MaxValue;
@@ -73,8 +65,9 @@ namespace Unit.Raid
 				return;
 
 			bestPlaceholder.unit = unit;
+			unit.View = Instantiate(unitView, bestPlaceholder.root);
+			unit.View.Init(unit);
 			_units.Add(unit.View);
-			unit.View.SetPlaceholder(bestPlaceholder.root);
 		}
 
 		private void UpdatePosition(List<Vector2Int> path, int indexFrom, int indexTo)
@@ -118,7 +111,7 @@ namespace Unit.Raid
 
 		public void Select(bool primary)
 		{
-			OnSelect?.Invoke(primary);
+			_model.Select(primary);
 		}
 	}
 }

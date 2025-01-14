@@ -8,8 +8,15 @@ namespace UI.Raid.Info
 		
 		public RaidInfoPanel(RaidInfoPanelView view, RaidManager raidManager) : base(view)
 		{
+			_view.OnClose += Close;
+			
 			_raidManager = raidManager;
 			_raidManager.OnRaidSelected += RaidSelected;
+		}
+
+		private void Close()
+		{
+			Hide();
 		}
 
 		private void RaidSelected(Unit.Raid.Raid raid)
@@ -19,8 +26,8 @@ namespace UI.Raid.Info
 				_view.Hide();
 			}
 			
-			_view.Raid = raid;
 			_view.Show();
+			_view.Raid = raid;
 		}
 	}
 }
