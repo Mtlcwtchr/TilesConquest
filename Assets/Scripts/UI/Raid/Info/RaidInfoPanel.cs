@@ -11,7 +11,6 @@ namespace UI.Raid.Info
 			_view.OnClose += Close;
 			
 			_raidManager = raidManager;
-			_raidManager.OnRaidSelected += RaidSelected;
 		}
 
 		private void Close()

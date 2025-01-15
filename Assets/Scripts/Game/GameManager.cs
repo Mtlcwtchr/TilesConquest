@@ -12,9 +12,14 @@ namespace Game
 
 		private World.World _world;
 		private Queue<Player> _playersQueue;
+		
+		public Player Player { get; set; }
+
+		public static GameManager Instance { get; private set; }
 
 		public GameManager(List<Player> players, World.World world)
 		{
+			Instance = this;
 			_players = players;
 			_playersQueue = new();
 			for (var i = 0; i < _players.Count; i++)

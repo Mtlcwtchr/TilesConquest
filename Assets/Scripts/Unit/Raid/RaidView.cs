@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Game;
 using UnityEngine;
 using Utils;
+using Random = UnityEngine.Random;
 
 namespace Unit.Raid
 {
@@ -29,7 +30,8 @@ namespace Unit.Raid
 		public void Init(Raid model)
 		{
 			_model = model;
-			_currentPosition = _model.Position;
+			var off = GetRandOffset();
+			_currentPosition = _model.Position + off;
 			transform.position = _currentPosition.V3();
 
 			_placeholders = new List<Placeholder>(placeholders);
@@ -81,9 +83,15 @@ namespace Unit.Raid
 			var timeFactor = 1f / (indexTo - indexFrom);
 			for (var i = indexFrom + 1; i <= indexTo; i++)
 			{
-				await UpdatePositionOnTime(path[i], timeFactor);
+				var off = GetRandOffset();
+				await UpdatePositionOnTime(path[i] + off, timeFactor);
 			}
 			NotifyUnitsState(EUnitState.Idle);
+		}
+
+		private Vector2 GetRandOffset()
+		{
+			return new Vector2(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f));
 		}
 
 		private async Task UpdatePositionOnTime(Vector2 desiredPosition, float timeFactor)
@@ -112,6 +120,11 @@ namespace Unit.Raid
 		public void Select(bool primary)
 		{
 			_model.Select(primary);
+		}
+
+		public void SetActive(bool active)
+		{
+			gameObject.SetActive(active);
 		}
 	}
 }

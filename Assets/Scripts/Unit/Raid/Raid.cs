@@ -9,6 +9,8 @@ namespace Unit.Raid
 {
 	public class Raid
 	{
+		public event Action<Raid> OnTargetSet; 
+		
 		public event Action<Raid, bool> OnSelected;
 		public event Action<List<Vector2Int>, int, int> OnPositionUpdate;
 		public event Action<Unit> OnUnitAdded;
@@ -94,6 +96,8 @@ namespace Unit.Raid
 
 			_target = target;
 			_target.Start();
+
+			OnTargetSet?.Invoke(this);
 		}
 
 		public void Move(List<Vector2Int> path, int indexFrom, int indexTo)

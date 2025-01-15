@@ -5,6 +5,7 @@ using Tiles.Manager;
 using Tiles.Pool;
 using UI.Bag;
 using UI.Manager;
+using UI.Raid.Brigade;
 using UI.Raid.Creation;
 using UI.Raid.Creation.Unit;
 using UI.Raid.Creation.Unit.Wearing;
@@ -16,6 +17,7 @@ using UI.Turn;
 using Unit.Config;
 using Unit.Creation;
 using Unit.Raid;
+using Unit.Raid.Brigade;
 using UnityEngine;
 using UnityEngine.UI;
 using World;
@@ -51,10 +53,14 @@ namespace Startup
 		[SerializeField] private RaidCreationPanelView raidCreationView;
 
 		[SerializeField] private Button test;
+		[SerializeField] private Button test2;
 
 		[SerializeField] private RaidView raid;
+		[SerializeField] private RaidBrigadeView brigadeView;
 
 		[SerializeField] private RaidInfoPanelView raidInfoPanel;
+
+		[SerializeField] private BrigadeInfoPanelView brigadeInfoPanelView;
 
 		private float _deltaTime;
 
@@ -76,13 +82,14 @@ namespace Startup
 			bagView.Init(bag);
 
 			var raidManager = new RaidManager(raid);
+			var raidBrigadeManager = new RaidBrigadeManager(raidManager, brigadeView);
 
 			var era = new Era(eraConfig);
 
 			var storage = new Storage(EResource.Gold, EResource.Goods, EResource.Food, EResource.Recruits);
 			var forge = new Forge(era);
 			var recruitHouse = new RecruitHouse(era);
-			_world = new World.World(era, storage, forge, recruitHouse, manager, raidManager);
+			_world = new World.World(era, storage, forge, recruitHouse, manager, raidManager, raidBrigadeManager);
 			raidManager.SetWorld(_world);
 
 			var storagePanelModel = new StoragePanel(storagePanel, storage);
@@ -96,10 +103,12 @@ namespace Startup
 			tilesControlPanel.Hide();
 
 			var player = new Player(manager);
+			var player2 = new Player(manager);
 
 			turnControl.Init(player);
 			
 			_gameManager = new GameManager(new() { player }, _world);
+			_gameManager.Player = player;
 			_gameManager.OnTurnFinish += UpdateTurn;
 
 			_uiManager = new UIManager(player, bag, tilesControlPanelModel);
@@ -114,10 +123,21 @@ namespace Startup
 
 			var raidInfoModel = new RaidInfoPanel(raidInfoPanel, raidManager);
 			raidInfoPanel.Init(raidInfoModel);
+
+			var brigadeInfoModel = new BrigadeInfoPanel(brigadeInfoPanelView, raidBrigadeManager);
+			brigadeInfoPanelView.Init(brigadeInfoModel);
 			
 			test.onClick.AddListener(() =>
 			{
 				raidCreation.RaidTemplate = new RaidTemplate(player);
+				raidCreation.Archetypes = _world.RecruitHouse.Archetypes;
+				raidCreation.Position = manager.GetCapital().Position;
+				raidCreation.Show();
+			});
+			
+			test2.onClick.AddListener(() =>
+			{
+				raidCreation.RaidTemplate = new RaidTemplate(player2);
 				raidCreation.Archetypes = _world.RecruitHouse.Archetypes;
 				raidCreation.Position = manager.GetCapital().Position;
 				raidCreation.Show();

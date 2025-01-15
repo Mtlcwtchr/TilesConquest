@@ -10,9 +10,10 @@ namespace Unit.Raid
 {
 	public class RaidManager
 	{
-		private RaidView _viewTemplate;
+		public event Action<Raid> OnRaidRegistered;
+		public event Action<Raid> OnRaidUnRegistered;
 		
-		public event Action<Raid> OnRaidSelected; 
+		private RaidView _viewTemplate;
 		
 		private List<Raid> _raids;
 		private List<RaidView> _views;
@@ -53,6 +54,8 @@ namespace Unit.Raid
 			_views.Add(raidView);
 			
 			raid.OnSelected += RaidSelected;
+
+			OnRaidRegistered?.Invoke(raid);
 		}
 
 		public void UnregisterRaid(Raid raid)
@@ -64,9 +67,11 @@ namespace Unit.Raid
 			_views.RemoveAt(raidIndex);
 
 			raid.OnSelected -= RaidSelected;
+
+			OnRaidUnRegistered?.Invoke(raid);
 		}
 		
-		public void Update(World.World world)
+		public void Update()
 		{
 			for (var i = 0; i < _raids.Count; i++)
 			{
@@ -88,23 +93,21 @@ namespace Unit.Raid
 			}
 			else
 			{
-				AttackRaid(raid);
+				ChaseRaid(raid);
 			}
 		}
 
 		private void SelectRaid(Raid raid)
 		{
 			_selectedRaid = raid;
-			
-			OnRaidSelected?.Invoke(raid);
 		}
 
-		private void AttackRaid(Raid raid)
+		private void ChaseRaid(Raid raid)
 		{
 			if (_selectedRaid == null)
 				return;
 			
-			var target = new ChaseRaidTarget(_selectedRaid, raid);
+			var target = new ChaseRaidTarget(_selectedRaid, raid, _world);
 			_selectedRaid.SetTarget(target);
 		}
 
@@ -117,6 +120,20 @@ namespace Unit.Raid
 				return;
 
 			MoveTo(_selectedRaid, tile);
+		}
+
+		public void RaidEnterBrigade(Raid raid)
+		{
+			var index = _raids.IndexOf(raid);
+			var raidView = _views[index];
+			raidView.SetActive(false);
+		}
+
+		public void RaidLeaveBrigade(Raid raid)
+		{
+			var index = _raids.IndexOf(raid);
+			var raidView = _views[index];
+			raidView.SetActive(true);
 		}
 	}
 }
